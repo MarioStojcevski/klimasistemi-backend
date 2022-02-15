@@ -6,6 +6,7 @@ import mk.klimasistemi.model.AirConditionerBrand;
 import mk.klimasistemi.repository.AirConditionerBrandRepository;
 import mk.klimasistemi.service.IAirConditionerBrandService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
@@ -27,4 +28,10 @@ public class AirConditionerBrandService implements IAirConditionerBrandService {
     public AirConditionerBrand findByName(String name) {
         return this.airConditionerBrandRepository.findAirConditionerBrandByName(name);
     }
+
+    @Override
+    public String getBrandImageById(Long id) {
+        return null;
+    }
+
 }
