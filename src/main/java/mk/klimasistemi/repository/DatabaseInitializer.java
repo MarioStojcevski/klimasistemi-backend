@@ -1,8 +1,8 @@
 //package mk.klimasistemi.repository;
 //
 //import lombok.Getter;
+//import lombok.RequiredArgsConstructor;
 //import mk.klimasistemi.model.AirConditioner;
-//import mk.klimasistemi.model.enumeration.AirConditionerBrand;
 //import mk.klimasistemi.model.enumeration.AirConditionerType;
 //import org.springframework.stereotype.Component;
 //
@@ -11,19 +11,16 @@
 //import java.io.File;
 //import java.io.FileNotFoundException;
 //import java.io.FileReader;
-//import java.text.DecimalFormat;
 //import java.util.ArrayList;
 //
 //@Component
 //@Getter
+//@RequiredArgsConstructor
 //public class DatabaseInitializer {
 //
 //    private final AirConditionerRepository airConditionerRepository;
+//    private final AirConditionerBrandRepository airConditionerBrandRepository;
 //    public ArrayList<AirConditioner> airConditioners;
-//
-//    public DatabaseInitializer(AirConditionerRepository airConditionerRepository) {
-//        this.airConditionerRepository = airConditionerRepository;
-//    }
 //
 //    @PostConstruct
 //    public void init() throws FileNotFoundException {
@@ -52,7 +49,7 @@
 //        } else {
 //            AirConditioner airConditioner = new AirConditioner();
 //
-//            airConditioner.setBrand(AirConditionerBrand.valueOf(lineParts[0]));
+//            airConditioner.setBrandtemp(Long.parseLong(lineParts[0]));
 //            airConditioner.setType(AirConditionerType.valueOf(lineParts[1]));
 //            airConditioner.setModelName(lineParts[2]);
 //            airConditioner.setEnergyClass(lineParts[3]);

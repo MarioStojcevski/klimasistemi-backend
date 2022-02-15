@@ -22,6 +22,8 @@ public class AirConditioner {
     @JoinColumn(name = "brand_id")
     public AirConditionerBrand brand;
 
+    public Long brandtemp;
+
     public AirConditionerType type;
     public String modelName;
     public String energyClass;
