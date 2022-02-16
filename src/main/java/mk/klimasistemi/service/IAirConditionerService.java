@@ -11,6 +11,7 @@ public interface IAirConditionerService {
     List<AirConditioner> getAllAirConditionersSorted(String field);
     Page<AirConditioner> getAllAirConditionersPaged(int page, int size);
     AirConditioner getAirConditionerById(Long id);
+    AirConditioner getAirConditionerByName(String modelName);
     AirConditioner updateAirConditioner(AirConditioner airConditioner);
     boolean deleteAirConditionerById(Long id);
 }

@@ -55,6 +55,12 @@ public class AirConditionerService implements IAirConditionerService {
     }
 
     @Override
+    public AirConditioner getAirConditionerByName(String modelName) {
+        log.info("Fetching air conditioner by name: {}", modelName);
+        return airConditionerRepository.getAirConditionerByModelName(modelName);
+    }
+
+    @Override
     public AirConditioner updateAirConditioner(AirConditioner airConditioner) {
         log.info("Updating air conditioner: {}", airConditioner.getModelName());
         return this.airConditionerRepository.save(airConditioner);

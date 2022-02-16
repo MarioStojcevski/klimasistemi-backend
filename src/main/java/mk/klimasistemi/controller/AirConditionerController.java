@@ -64,10 +64,22 @@ public class AirConditionerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getAirConditioner(@PathVariable("id") Long id) {
+    public ResponseEntity<Response> getAirConditionerById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
-                .data(Map.of("fetched", airConditionerService.getAirConditionerById(id)))
+                .data(Map.of("airConditioner", airConditionerService.getAirConditionerById(id)))
+                .message("Air conditioner retrieved!")
+                .status(HttpStatus.OK)
+                .statusCode(HttpStatus.OK.value())
+                .build()
+        );
+    }
+
+    @GetMapping("/getByModelName/{modelName}")
+    public ResponseEntity<Response> getAirConditionerByModelName(@PathVariable("modelName") String modelName) {
+        return ResponseEntity.ok(Response.builder()
+                .timeStamp(LocalDateTime.now())
+                .data(Map.of("airConditioner", airConditionerService.getAirConditionerByName(modelName)))
                 .message("Air conditioner retrieved!")
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())
