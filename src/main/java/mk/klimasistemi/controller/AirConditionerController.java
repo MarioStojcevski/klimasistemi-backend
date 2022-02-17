@@ -3,6 +3,7 @@ package mk.klimasistemi.controller;
 import lombok.RequiredArgsConstructor;
 import mk.klimasistemi.model.AirConditioner;
 import mk.klimasistemi.model.Response;
+import mk.klimasistemi.model.dto.FrontEndFilterDto;
 import mk.klimasistemi.service.IAirConditionerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +41,20 @@ public class AirConditionerController {
     @GetMapping("/allSorted/{field}")
     public ResponseEntity<Response> getAirConditionersSorted(@PathVariable String field) {
         List<AirConditioner> airConditionerList = airConditionerService.getAllAirConditionersSorted(field);
+        return ResponseEntity.ok(Response.builder()
+                .timeStamp(LocalDateTime.now())
+                .data(Map.of("airConditioners", airConditionerList))
+                .size(airConditionerList.size())
+                .message("Fetched sorted air conditioners!")
+                .status(HttpStatus.OK)
+                .statusCode(HttpStatus.OK.value())
+                .build()
+        );
+    }
+
+    @PostMapping("/allFiltered")
+    public ResponseEntity<Response> getAirConditionersFiltered(@RequestBody FrontEndFilterDto filter) {
+        List<AirConditioner> airConditionerList = airConditionerService.getAllAirConditionersFiltered(filter);
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
                 .data(Map.of("airConditioners", airConditionerList))

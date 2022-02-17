@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mk.klimasistemi.model.AirConditioner;
 import mk.klimasistemi.model.AirConditionerBrand;
+import mk.klimasistemi.model.dto.FrontEndFilterDto;
 import mk.klimasistemi.repository.AirConditionerBrandRepository;
 import mk.klimasistemi.repository.AirConditionerRepository;
 import mk.klimasistemi.service.IAirConditionerService;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -40,6 +42,20 @@ public class AirConditionerService implements IAirConditionerService {
     public List<AirConditioner> getAllAirConditionersSorted(String field) {
         log.info("Fetching all air conditioners sorted by {}...", field);
         return this.airConditionerRepository.findAll(Sort.by(Sort.Direction.ASC, field)).stream().toList();
+    }
+
+    @Override
+    public List<AirConditioner> getAllAirConditionersFiltered(FrontEndFilterDto filter) {
+        log.info("Fetching all air conditioners filtered by: " +
+                        "[sort: {}, minPrice:{}, maxPrice:{}, powerArray:{}...",
+                filter.getSortBy(),
+                filter.getMinPrice(),
+                filter.getMaxPrice(),
+                Arrays.stream(filter.getPowerArray()).toList());
+        List<AirConditioner> filtered = this.airConditionerRepository.findAll
+                (Sort.by(Sort.Direction.ASC, filter.getSortBy())).stream().toList();
+        filtered=this.airConditionerRepository.filterByPrice(filter.getMinPrice(), filter.getMaxPrice());
+        return filtered;
     }
 
     @Override
