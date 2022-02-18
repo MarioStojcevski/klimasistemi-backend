@@ -49,16 +49,22 @@ public class AirConditionerService implements IAirConditionerService {
                 filter.getMinPrice(),
                 filter.getMaxPrice(),
                 Arrays.stream(filter.getPowerArray()).toList());
-        if(!filter.getSortBy().isEmpty() || filter.getSortBy() != null &&
-                filter.getPowerArray().length != 0 || filter.getPowerArray() != null) {
+
+        //sort string and price ranges exist.
+        if(!filter.getSortBy().equals("") && filter.getPowerArray().length != 0) {
             return this.airConditionerRepository.filterByFilterDto(filter, Sort.by(Sort.Direction.ASC, filter.getSortBy()));
-        } else if(filter.getSortBy().isEmpty() || filter.getSortBy() == null &&
-                filter.getPowerArray().length != 0 || filter.getPowerArray() != null) {
+        }
+        //price range exists. sort string is "".
+        else if(filter.getSortBy().equals("") && filter.getPowerArray().length != 0) {
             return this.airConditionerRepository.filterByFilterDtoNoSort(filter);
-        } else if(filter.getPowerArray().length == 0 || filter.getPowerArray() == null){
-            return this.airConditionerRepository.filterByFilterDtoNoPowerArray(filter);
-        } else {
-            return this.airConditionerRepository.findAll();
+        }
+        //sort string exists. price range is [].
+        else if(!filter.getSortBy().equals("") && filter.getPowerArray().length == 0){
+            return this.airConditionerRepository.filterByPriceSort(filter, Sort.by(Sort.Direction.ASC, filter.getSortBy()));
+        }
+        //sort string is "". price range is [].
+        else {
+            return this.airConditionerRepository.filterByPrice(filter);
         }
     }
 

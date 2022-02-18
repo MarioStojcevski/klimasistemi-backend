@@ -11,17 +11,31 @@ import java.util.List;
 
 public interface AirConditionerRepository extends JpaRepository<AirConditioner, Long> {
 
-    @Query("SELECT ac FROM AirConditioner ac WHERE ac.price > :#{#filterDto.minPrice} " +
-            "AND ac.price < :#{#filterDto.maxPrice} AND ac.averagePower IN :#{#filterDto.powerArray}")
+    // Filter when sort string is != "" and kW array != [].
+    @Query("SELECT ac FROM AirConditioner ac WHERE " +
+            "ac.price > :#{#filterDto.minPrice} AND " +
+            "ac.price < :#{#filterDto.maxPrice} AND " +
+            "ac.averagePower IN :#{#filterDto.powerArray}")
     List<AirConditioner> filterByFilterDto(@Param("filterDto") FrontEndFilterDto filterDto, Sort sort);
 
-    @Query("SELECT ac FROM AirConditioner ac WHERE ac.price > :#{#filterDto.minPrice} " +
-            "AND ac.price < :#{#filterDto.maxPrice} AND ac.averagePower IN :#{#filterDto.powerArray}")
+    // Filter when sort string == "" and kW array != [].
+    @Query("SELECT ac FROM AirConditioner ac WHERE " +
+            "ac.price > :#{#filterDto.minPrice} AND " +
+            "ac.price < :#{#filterDto.maxPrice} AND " +
+            "ac.averagePower IN :#{#filterDto.powerArray}")
     List<AirConditioner> filterByFilterDtoNoSort(@Param("filterDto") FrontEndFilterDto filterDto);
 
-    @Query("SELECT ac FROM AirConditioner ac WHERE ac.price > :#{#filterDto.minPrice} " +
-            "AND ac.price < :#{#filterDto.maxPrice}")
-    List<AirConditioner> filterByFilterDtoNoPowerArray(@Param("filterDto") FrontEndFilterDto filterDto);
+    // Filter when sort string == "" and kW array == []. Therefore only filter by price
+    @Query("SELECT ac FROM AirConditioner ac WHERE " +
+            "ac.price > :#{#filterDto.minPrice} AND " +
+            "ac.price < :#{#filterDto.maxPrice}")
+    List<AirConditioner> filterByPrice(@Param("filterDto") FrontEndFilterDto filterDto);
+
+    // Filter when sort string != "" and kW array == [].
+    @Query("SELECT ac FROM AirConditioner ac WHERE " +
+            "ac.price > :#{#filterDto.minPrice} AND " +
+            "ac.price < :#{#filterDto.maxPrice}")
+    List<AirConditioner> filterByPriceSort(@Param("filterDto") FrontEndFilterDto filterDto, Sort sort);
 
     AirConditioner getAirConditionerByModelName(String modelName);
 }
