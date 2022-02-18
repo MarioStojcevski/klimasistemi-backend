@@ -3,9 +3,7 @@ package mk.klimasistemi.service.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mk.klimasistemi.model.AirConditioner;
-import mk.klimasistemi.model.AirConditionerBrand;
 import mk.klimasistemi.model.dto.FrontEndFilterDto;
-import mk.klimasistemi.repository.AirConditionerBrandRepository;
 import mk.klimasistemi.repository.AirConditionerRepository;
 import mk.klimasistemi.service.IAirConditionerService;
 import org.springframework.data.domain.Page;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -52,10 +49,17 @@ public class AirConditionerService implements IAirConditionerService {
                 filter.getMinPrice(),
                 filter.getMaxPrice(),
                 Arrays.stream(filter.getPowerArray()).toList());
-        List<AirConditioner> filtered = this.airConditionerRepository.findAll
-                (Sort.by(Sort.Direction.ASC, filter.getSortBy())).stream().toList();
-        filtered=this.airConditionerRepository.filterByPrice(filter.getMinPrice(), filter.getMaxPrice());
-        return filtered;
+        if(!filter.getSortBy().isEmpty() || filter.getSortBy() != null &&
+                filter.getPowerArray().length != 0 || filter.getPowerArray() != null) {
+            return this.airConditionerRepository.filterByFilterDto(filter, Sort.by(Sort.Direction.ASC, filter.getSortBy()));
+        } else if(filter.getSortBy().isEmpty() || filter.getSortBy() == null &&
+                filter.getPowerArray().length != 0 || filter.getPowerArray() != null) {
+            return this.airConditionerRepository.filterByFilterDtoNoSort(filter);
+        } else if(filter.getPowerArray().length == 0 || filter.getPowerArray() == null){
+            return this.airConditionerRepository.filterByFilterDtoNoPowerArray(filter);
+        } else {
+            return this.airConditionerRepository.findAll();
+        }
     }
 
     @Override
