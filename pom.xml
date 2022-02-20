@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging> <!-- change to jar or delete for dev -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -57,9 +58,24 @@
             <artifactId>commons-csv</artifactId>
             <version>1.8</version>
         </dependency>
+
+        <!-- Executable and self hosted -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JDK 9+ Support -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>klimasistemiapi</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

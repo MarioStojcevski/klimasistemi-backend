@@ -3,6 +3,7 @@
 //import lombok.Getter;
 //import lombok.RequiredArgsConstructor;
 //import mk.klimasistemi.model.AirConditioner;
+//import mk.klimasistemi.model.AirConditionerBrand;
 //import mk.klimasistemi.model.enumeration.AirConditionerType;
 //import org.springframework.stereotype.Component;
 //
@@ -49,7 +50,7 @@
 //        } else {
 //            AirConditioner airConditioner = new AirConditioner();
 //
-//            airConditioner.setBrandtemp(Long.parseLong(lineParts[0]));
+//            airConditioner.setBrandtemp(Long.valueOf((lineParts[0])));
 //            airConditioner.setType(AirConditionerType.valueOf(lineParts[1]));
 //            airConditioner.setModelName(lineParts[2]);
 //            airConditioner.setEnergyClass(lineParts[3]);
