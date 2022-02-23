@@ -9,4 +9,5 @@ public class FrontEndFilterDto {
     Long minPrice;
     Long[] powerArray;
     String sortBy;
+    Long filterByBrand;
 }

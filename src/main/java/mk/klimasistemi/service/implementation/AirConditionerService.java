@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +31,6 @@ public class AirConditionerService implements IAirConditionerService {
     }
 
     @Override
-    public List<AirConditioner> getAllAirConditioners() {
-        log.info("Fetching all air conditioners...");
-        return this.airConditionerRepository.findAll();
-    }
-
-    @Override
     public List<AirConditioner> getAllAirConditionersSorted(String field) {
         log.info("Fetching all air conditioners sorted by {}...", field);
         return this.airConditionerRepository.findAll(Sort.by(Sort.Direction.ASC, field)).stream().toList();
@@ -44,28 +39,37 @@ public class AirConditionerService implements IAirConditionerService {
     @Override
     public List<AirConditioner> getAllAirConditionersFiltered(FrontEndFilterDto filter) {
         log.info("Fetching all air conditioners filtered by: " +
-                        "[sort: {}, minPrice:{}, maxPrice:{}, powerArray:{}...",
+                        "[sort: {}, minPrice:{}, maxPrice:{}, brand: {}, powerArray:{} ]...",
                 filter.getSortBy(),
                 filter.getMinPrice(),
                 filter.getMaxPrice(),
+                filter.getFilterByBrand(),
                 Arrays.stream(filter.getPowerArray()).toList());
+
+        List<AirConditioner> airConditioners;
 
         //sort string and price ranges exist.
         if(!filter.getSortBy().equals("") && filter.getPowerArray().length != 0) {
-            return this.airConditionerRepository.filterByFilterDto(filter, Sort.by(Sort.Direction.ASC, filter.getSortBy()));
+            airConditioners = this.airConditionerRepository.filterByFilterDto(filter, Sort.by(Sort.Direction.ASC, filter.getSortBy()));
         }
         //price range exists. sort string is "".
         else if(filter.getSortBy().equals("") && filter.getPowerArray().length != 0) {
-            return this.airConditionerRepository.filterByFilterDtoNoSort(filter);
+            airConditioners = this.airConditionerRepository.filterByFilterDtoNoSort(filter);
         }
         //sort string exists. price range is [].
         else if(!filter.getSortBy().equals("") && filter.getPowerArray().length == 0){
-            return this.airConditionerRepository.filterByPriceSort(filter, Sort.by(Sort.Direction.ASC, filter.getSortBy()));
+            airConditioners = this.airConditionerRepository.filterByPriceSort(filter, Sort.by(Sort.Direction.ASC, filter.getSortBy()));
         }
         //sort string is "". price range is [].
         else {
-            return this.airConditionerRepository.filterByPrice(filter);
+            airConditioners = this.airConditionerRepository.filterByPrice(filter);
         }
+
+        if(filter.getFilterByBrand() != null) {
+            return airConditioners.stream().filter(airConditioner -> airConditioner.getBrand().getId().equals(filter.getFilterByBrand())).toList();
+        }
+
+        return airConditioners;
     }
 
     @Override
@@ -84,12 +88,6 @@ public class AirConditionerService implements IAirConditionerService {
     public AirConditioner getAirConditionerByName(String modelName) {
         log.info("Fetching air conditioner by name: {}", modelName);
         return airConditionerRepository.getAirConditionerByModelName(modelName);
-    }
-
-    @Override
-    public AirConditioner updateAirConditioner(AirConditioner airConditioner) {
-        log.info("Updating air conditioner: {}", airConditioner.getModelName());
-        return this.airConditionerRepository.save(airConditioner);
     }
 
     @Override

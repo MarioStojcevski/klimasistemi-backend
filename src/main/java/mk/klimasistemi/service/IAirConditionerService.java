@@ -8,12 +8,10 @@ import java.util.List;
 
 public interface IAirConditionerService {
     AirConditioner createAirConditioner(AirConditioner airConditioner);
-    List<AirConditioner> getAllAirConditioners();
     List<AirConditioner> getAllAirConditionersSorted(String field);
     List<AirConditioner> getAllAirConditionersFiltered(FrontEndFilterDto filter);
     Page<AirConditioner> getAllAirConditionersPaged(int page, int size);
     AirConditioner getAirConditionerById(Long id);
     AirConditioner getAirConditionerByName(String modelName);
-    AirConditioner updateAirConditioner(AirConditioner airConditioner);
     boolean deleteAirConditionerById(Long id);
 }
