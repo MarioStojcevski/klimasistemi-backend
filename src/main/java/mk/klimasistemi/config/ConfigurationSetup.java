@@ -12,17 +12,6 @@ import java.util.Arrays;
 
 @Configuration
 public class ConfigurationSetup {
-
-    // Setting up the static resource folder for loading images and files
-    public class WebConfig implements WebMvcConfigurer {
-        @Override
-        public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/**")
-                    .addResourceLocations("classpath:/static/","classpath:/image/")
-                    .setCachePeriod(0);
-        }
-    }
-
     // Setting up the configuration for CORS filters
     @Bean
     public CorsFilter corsFilter() {
