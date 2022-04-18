@@ -6,12 +6,10 @@ import mk.klimasistemi.model.Response;
 import mk.klimasistemi.model.dto.FrontEndFilterDto;
 import mk.klimasistemi.service.IAirConditionerService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +65,7 @@ public class AirConditionerController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Response> addAirConditioner(@RequestBody @Valid AirConditioner airConditioner) {
+    public ResponseEntity<Response> addAirConditioner(@RequestBody AirConditioner airConditioner) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
                 .data(Map.of("added", airConditionerService.createAirConditioner(airConditioner)))
