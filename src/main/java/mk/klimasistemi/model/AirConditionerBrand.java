@@ -21,6 +21,7 @@ public class AirConditionerBrand {
     private Long id;
     public String name;
     public String logoImageURL;
+    public Boolean visible;
 
     @JsonIgnore
     @OneToMany(mappedBy = "brand")

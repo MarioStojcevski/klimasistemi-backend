@@ -105,4 +105,6 @@ public class AirConditioner {
      * The guarantee of the air conditioner in months.
      */
     public Long guarantee;
+
+    public Boolean visible;
 }
